@@ -1,4 +1,6 @@
 .atl/
-
+.venv/
 node_modules/
-.atl/
+__pycache__/
+*.pyc
+*.egg-info/
