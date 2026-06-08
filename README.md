@@ -152,6 +152,19 @@ Before `/opsx:archive`:
 If any preflight fails, stop and record the blocker. Do not emulate OpenSpec from CAFL.
 Do not modify OpenSpec internals.
 
+### Approved OpenSpec Artifacts
+
+OpenSpec artifacts are considered approved for CAFL flow only when all of the following are true:
+
+- OpenSpec proposal/spec/tasks exist.
+- The relevant artifact paths or identifiers are recorded.
+- The owner or maintainer has confirmed they are acceptable for the next CAFL step.
+- No known OpenSpec blocker remains.
+- The next CAFL command can reference the artifact evidence.
+
+CAFL commands must not invent OpenSpec approval.
+If approval evidence is missing, the command must block or ask for owner/maintainer confirmation.
+
 A future installer (`cafl-framework-installer`) will automate steps 1 and 2.
 Until then, downstream setup is manual.
 
@@ -331,6 +344,22 @@ Each test case uses this block:
 `/project:test` records the real execution result. Tests must not be faked.
 
 Automatable test cases need RED evidence before `/opsx:apply`. If RED cannot be executed, record `NOT_EXECUTED` with justification. Use `NOT_APPLICABLE` only when the test case is not automatable or RED does not apply.
+
+## TDD RED Evidence Responsibility
+
+`/project:test-plan` does not execute tests.
+
+Its responsibility is to define the expected RED evidence before `/opsx:apply`.
+
+RED evidence may be captured by the user, test runner, or implementation workflow before `/opsx:apply`.
+
+Allowed RED statuses:
+
+- `EXPECTED_FAIL_RECORDED`: the test was executed before implementation and failed as expected.
+- `NOT_EXECUTED`: the RED check could not be executed before implementation; justification is required.
+- `NOT_APPLICABLE`: RED does not apply to this case; justification is required.
+
+A test case must not claim TDD RED evidence unless the evidence or justification is recorded.
 
 ## Maintainer-only Actions
 

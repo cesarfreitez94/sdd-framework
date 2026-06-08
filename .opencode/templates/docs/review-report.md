@@ -16,6 +16,14 @@
 - Change: TBD
 - Ready to archive: yes | no | unknown
 
+## OpenSpec Artifact Evidence
+
+- OpenSpec command: TBD
+- Artifact path or identifier: TBD
+- Owner/maintainer approval: yes | no
+- Approval evidence: TBD
+- Known blockers: TBD
+
 ## PRD Alignment
 - Finding: TBD
 - Evidence: TBD
@@ -58,9 +66,27 @@
 | Missing OpenSpec proposal/spec artifacts | `/opsx:propose` |
 | Missing OpenSpec apply evidence | `/opsx:apply` |
 | Implementation/code issue | `/opsx:apply` |
-| Documentation issue only | `/project:review` after documentation correction |
+| Documentation/evidence issue only | The command that owns the missing artifact, from Documentation Rework Routing |
+
+## Documentation Rework Routing
+
+If review fails only because documentation or evidence is incomplete, route to the command that owns the missing artifact:
+
+| Documentation issue | Retry target |
+|---|---|
+| PRD contracts or readiness missing | `/project:prd` |
+| Backlog state or selected item unclear | `/project:backlog` |
+| Prioritization missing or inconsistent | `/project:prioritize` |
+| Test plan incomplete | `/project:test-plan` |
+| Test results missing or incomplete | `/project:test` |
+| Review report incomplete | `/project:review` |
+| OpenSpec proposal evidence missing | `/opsx:propose` |
+| OpenSpec apply evidence missing | `/opsx:apply` |
+
+Documentation-only issues must not be routed to `/opsx:apply` unless the missing documentation is implementation/apply evidence.
 
 ## Retry Target
+- Rework type: implementation | test evidence | documentation/evidence | PRD/backlog definition | OpenSpec artifact
 - Failure cause: TBD
 - Required retry target: TBD
 - Missing evidence if BLOCKED: TBD

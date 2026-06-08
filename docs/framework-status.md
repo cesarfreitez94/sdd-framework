@@ -2,10 +2,10 @@
 
 ## Current State
 
-- Status: In Progress
-- Focus: Audit fix pass 2 — operational gap resolution
-- Last reviewed: 2026-06-08
-- Next recommended action: Maintainer-only commit of the fix pass after review, then re-run audit and begin cafl-framework-installer validation
+- Status: MVP implemented; downstream validation in progress.
+- Current macro focus: stabilizing operational contracts and validating the framework in real downstream repositories.
+- Last reviewed: 2026-06-08.
+- Next recommended action: re-run repository audit, then continue downstream validation if no critical fixes remain.
 
 ## Implemented
 
@@ -13,14 +13,14 @@
 - Manual readiness and review gates
 - OpenSpec black-box integration model
 - Template/runtime artifact separation
-- Downstream usage guide (manual method)
+- Downstream usage guide
 - Failure and rework flow documentation
-- Execution log with first real downstream entry
+- Execution log with initial downstream evidence
 
 ## In Progress
 
 - cafl-framework-installer downstream validation
-- Audit fix pass 2 (this task)
+- Operational contract hardening
 
 ## Pending
 
@@ -37,5 +37,6 @@
 
 ## Notes
 
-- Use `docs/execution-log.md` for all downstream validation evidence.
-- Do not modify this file to track project delivery items; use `docs/backlog.md`.
+- `docs/framework-status.md` tracks the framework repository status only.
+- `docs/backlog.md` must not be used as the framework repository status source.
+- Maintainer-only actions such as commit, push, and declaring validation accepted must be performed by the owner/maintainer, not by project commands.

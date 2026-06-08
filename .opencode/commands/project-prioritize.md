@@ -16,7 +16,7 @@ Use this command after the backlog exists and before OpenSpec exploration.
 
 ## Allowed writes
 - `docs/prioritization.md`.
-- `docs/backlog.md`, only to update `Status`, `Current Phase`, `Last Command`, and `Next Command` for the active item when the file exists.
+- `docs/backlog.md`, only to update `Priority`, `Status`, `Current Phase`, `Last Command`, and `Next Command` for the active item when the file exists.
 
 ## Forbidden actions
 - Do not commit.
@@ -29,9 +29,29 @@ Use this command after the backlog exists and before OpenSpec exploration.
 - Do not update files outside the allowed writes.
 
 ## Expected output
-Create `docs/prioritization.md` and update backlog state columns for the active item.
+Create `docs/prioritization.md` and update backlog priority and state fields for the active item.
 
-Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
+Every cafl command must update `docs/backlog.md` when the file exists. For `/project:prioritize`, this update is limited to the active item fields: `Priority`, `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
+
+## Priority Update Rule
+
+`/project:prioritize` may update `docs/backlog.md` only for prioritization and state tracking.
+
+Allowed backlog updates:
+
+- `Priority`
+- `Status`
+- `Current Phase`
+- `Last Command`
+- `Next Command`
+
+Forbidden backlog updates:
+
+- rewriting user stories
+- changing acceptance criteria
+- changing scope
+- deleting backlog items
+- creating unrelated backlog items
 
 ## Template Source and Runtime Output
 
@@ -87,7 +107,7 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 - The rationale for prioritization is documented.
 - Backlog priorities are updated or explicitly documented as pending validation.
 - Missing information is represented as assumptions or open questions.
-- `docs/backlog.md` was updated only in the allowed active item columns when it exists, or the skipped update was stated.
+- `docs/backlog.md` was updated only in the allowed priority and active item state fields when it exists, or the skipped update was stated.
 
 ## Next command
 `/opsx:explore`

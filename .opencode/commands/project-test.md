@@ -34,7 +34,7 @@ Use this command after `/opsx:apply` has implemented the active change.
 
 ## Expected output
 Create `docs/test-results/<change>.md` with real GREEN validation evidence, or a clear not-executed result with the reason.
-GREEN validation must reference the prior RED evidence recorded in `docs/test-plan.md` for each related test case.
+GREEN validation must reference the prior RED status and evidence recorded in `docs/test-plan.md` for each related test case.
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 

@@ -19,6 +19,14 @@
 - Specs: TBD
 - Tasks: TBD
 
+## OpenSpec Artifact Evidence
+
+- OpenSpec command: TBD
+- Artifact path or identifier: TBD
+- Owner/maintainer approval: yes | no
+- Approval evidence: TBD
+- Known blockers: TBD
+
 ## CDD Contracts Covered
 | Contract | Source | Covered By |
 |---|---|---|
@@ -40,6 +48,8 @@
 - RED status: EXPECTED_FAIL_RECORDED | NOT_EXECUTED | NOT_APPLICABLE
 - RED evidence:
 - Justification if not executed:
+- Captured by:
+- Captured before `/opsx:apply`: yes | no
 
 ## Test Data
 - Data: TBD

@@ -41,6 +41,19 @@ Create `docs/review-report.md` with technical, functional, CDD, and TDD evidence
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 
+## Approved OpenSpec Artifacts
+
+OpenSpec artifacts are considered approved for CAFL flow only when all of the following are true:
+
+- OpenSpec proposal/spec/tasks exist.
+- The relevant artifact paths or identifiers are recorded.
+- The owner or maintainer has confirmed they are acceptable for the next CAFL step.
+- No known OpenSpec blocker remains.
+- The next CAFL command can reference the artifact evidence.
+
+CAFL commands must not invent OpenSpec approval.
+If approval evidence is missing, the command must block or ask for owner/maintainer confirmation.
+
 ## Template Source and Runtime Output
 
 - Template source: `.opencode/templates/docs/review-report.md`
@@ -76,13 +89,38 @@ Route rework based on the failure cause:
 | Missing OpenSpec proposal/spec artifacts | `/opsx:propose` |
 | Missing OpenSpec apply evidence | `/opsx:apply` |
 | Implementation/code issue | `/opsx:apply` |
-| Documentation issue only | `/project:review` after documentation correction |
+| Documentation/evidence issue only | The command that owns the missing artifact, from Documentation Rework Routing |
 
 Rules:
 
 Do not route all failures to /opsx:apply.
 Do not approve review if required evidence is missing.
 If the failure cause is ambiguous, return BLOCKED and list missing evidence.
+
+Review output must distinguish these rework types:
+
+- implementation rework
+- test evidence rework
+- documentation/evidence rework
+- PRD/backlog definition rework
+- OpenSpec artifact rework
+
+## Documentation Rework Routing
+
+If review fails only because documentation or evidence is incomplete, route to the command that owns the missing artifact:
+
+| Documentation issue | Retry target |
+|---|---|
+| PRD contracts or readiness missing | `/project:prd` |
+| Backlog state or selected item unclear | `/project:backlog` |
+| Prioritization missing or inconsistent | `/project:prioritize` |
+| Test plan incomplete | `/project:test-plan` |
+| Test results missing or incomplete | `/project:test` |
+| Review report incomplete | `/project:review` |
+| OpenSpec proposal evidence missing | `/opsx:propose` |
+| OpenSpec apply evidence missing | `/opsx:apply` |
+
+Documentation-only issues must not be routed to `/opsx:apply` unless the missing documentation is implementation/apply evidence.
 
 ## Output template
 ```markdown
@@ -99,6 +137,14 @@ If the failure cause is ambiguous, return BLOCKED and list missing evidence.
 ## OpenSpec Change Reviewed
 - Change:
 - Ready to archive: yes | no | unknown
+
+## OpenSpec Artifact Evidence
+
+- OpenSpec command:
+- Artifact path or identifier:
+- Owner/maintainer approval: yes | no
+- Approval evidence:
+- Known blockers:
 
 ## PRD Alignment
 - Finding:
@@ -131,6 +177,7 @@ If the failure cause is ambiguous, return BLOCKED and list missing evidence.
 - Gap:
 
 ## Retry Routing
+- Rework type: implementation | test evidence | documentation/evidence | PRD/backlog definition | OpenSpec artifact
 - Failure cause:
 - Required retry target:
 - Missing evidence if BLOCKED:
