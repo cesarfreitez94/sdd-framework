@@ -21,3 +21,5 @@
 
 ## Open Questions
 - TBD
+
+> Risks and assumptions captured here feed the elicitation readiness gate in `docs/elicitation-notes.md`.

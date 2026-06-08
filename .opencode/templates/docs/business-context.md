@@ -26,3 +26,5 @@
 
 ## Open Questions
 - TBD
+
+> Elicitation readiness is assessed in `docs/elicitation-notes.md`. This document feeds the business context required for the readiness gate.

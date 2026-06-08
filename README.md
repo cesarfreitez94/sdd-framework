@@ -171,7 +171,7 @@ Until then, downstream setup is manual.
 ## Happy Path MVP
 ```text
 /project:discover-repo
-/project:elicit
+/project:elicit          ← readiness gate: loops back to /project:elicit if NOT_READY
 /project:prd
 /project:backlog
 /project:prioritize

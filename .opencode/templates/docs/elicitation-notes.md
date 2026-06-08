@@ -48,6 +48,28 @@
 - Why it blocks PRD:
 - Needed decision:
 
+## Elicitation Review Checklist
+
+| Check | Status | Evidence | Gap |
+|---|---|---|---|
+| Problem is clear | TBD | TBD | TBD |
+| Users/stakeholders are identified | TBD | TBD | TBD |
+| Goals are defined | TBD | TBD | TBD |
+| Non-goals are defined | TBD | TBD | TBD |
+| Critical decisions are captured | TBD | TBD | TBD |
+| Blocking questions are explicit | TBD | TBD | TBD |
+| Risks are captured | TBD | TBD | TBD |
+| MVP vs future scope is separated | TBD | TBD | TBD |
+| PRD can be generated without major inference | TBD | TBD | TBD |
+
+## Elicitation Readiness
+
+- Status: READY | NOT_READY
+- Reason:
+- Missing context:
+- Blocking questions:
+- Next command:
+
 ## Initial Acceptance Signals
 - Signal: TBD
 - Evidence expected: TBD
@@ -56,5 +78,5 @@
 - Status: TBD
 - Current Phase: Discovery
 - Last Command: /project:elicit
-- Next Command: /project:prd
+- Next Command: `/project:prd` if `Elicitation Readiness` is `READY`, otherwise `/project:elicit`
 - Note: If `docs/backlog.md` did not exist, state that the backlog update was skipped.

@@ -54,42 +54,14 @@
 - Note: TBD
 - Gap: TBD
 
-## Review Failure Routing
+## Retry Routing
 
-| Failure cause | Required retry target |
-|---|---|
-| Missing or NOT_READY PRD / missing contracts | `/project:prd` |
-| Missing CDD mapping | `/project:test-plan` |
-| Missing TDD RED evidence or test plan mismatch | `/project:test-plan` |
-| Missing test results | `/project:test` |
-| Failed tests | `/project:test` or `/opsx:apply`, depending on whether the failure is test execution or implementation |
-| Missing OpenSpec proposal/spec artifacts | `/opsx:propose` |
-| Missing OpenSpec apply evidence | `/opsx:apply` |
-| Implementation/code issue | `/opsx:apply` |
-| Documentation/evidence issue only | The command that owns the missing artifact, from Documentation Rework Routing |
+> Routing rules are defined in `.opencode/commands/project-review.md`.
+> This report records only the selected retry target and reason.
 
-## Documentation Rework Routing
-
-If review fails only because documentation or evidence is incomplete, route to the command that owns the missing artifact:
-
-| Documentation issue | Retry target |
-|---|---|
-| PRD contracts or readiness missing | `/project:prd` |
-| Backlog state or selected item unclear | `/project:backlog` |
-| Prioritization missing or inconsistent | `/project:prioritize` |
-| Test plan incomplete | `/project:test-plan` |
-| Test results missing or incomplete | `/project:test` |
-| Review report incomplete | `/project:review` |
-| OpenSpec proposal evidence missing | `/opsx:propose` |
-| OpenSpec apply evidence missing | `/opsx:apply` |
-
-Documentation-only issues must not be routed to `/opsx:apply` unless the missing documentation is implementation/apply evidence.
-
-## Retry Target
-- Rework type: implementation | test evidence | documentation/evidence | PRD/backlog definition | OpenSpec artifact
-- Failure cause: TBD
-- Required retry target: TBD
-- Missing evidence if BLOCKED: TBD
+- Failure cause:
+- Required retry target:
+- Reason:
 
 ## Release Notes Summary If Applicable
 - Summary: TBD
