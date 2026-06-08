@@ -37,6 +37,11 @@ Create `docs/test-plan.md` with CDD coverage and TDD RED/GREEN cases.
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 
+## Template Source and Runtime Output
+
+- Template source: `.opencode/templates/docs/test-plan.md`
+- Runtime output: `./docs/test-plan.md` in the target repository
+
 ## Output template
 ```markdown
 # Test Plan

@@ -30,6 +30,23 @@ Create `docs/backlog.md` as the MVP state source with actionable user stories an
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 
+## Template Source and Runtime Output
+
+- Template source: `.opencode/templates/docs/backlog.md`
+- Runtime output: `./docs/backlog.md` in the target repository
+
+## Preflight Check
+
+Before generating the backlog:
+
+1. Read `docs/prd.md`.
+2. Verify `## Backlog Readiness`.
+3. If `Status: READY`, proceed.
+4. If `Status: NOT_READY`, stop and output:
+   `BLOCKED: PRD is NOT_READY. Resolve all Blocking Open Questions before generating backlog.`
+5. If `## Backlog Readiness` is missing, stop and route back to `/project:prd`.
+6. Do not encode ambiguous PRD items into backlog stories.
+
 ## Output template
 ```markdown
 # Product Backlog
@@ -61,10 +78,14 @@ The backlog is the MVP state source. Update only the active item state columns w
 
 ## Acceptance criteria
 - `docs/backlog.md` exists.
+- Backlog generation only proceeds when `docs/prd.md` declares `## Backlog Readiness` with `Status: READY`.
+- If `docs/prd.md` declares `Status: NOT_READY`, the command stops and outputs the required blocked message.
+- If `## Backlog Readiness` is missing, the command stops and routes back to `/project:prd`.
 - The backlog table includes exactly these columns: `ID`, `User Story`, `Acceptance Criteria`, `Priority`, `Status`, `Current Phase`, `Last Command`, and `Next Command`.
 - Status values are limited to `Pending`, `In Progress`, `Blocked`, and `Completed`.
 - The backlog is documented as the MVP state source.
 - Missing information is represented as assumptions or open questions.
+- Ambiguous PRD items are not encoded into backlog stories.
 - Existing unrelated backlog content is not rewritten when only state needs to change.
 
 ## Next command

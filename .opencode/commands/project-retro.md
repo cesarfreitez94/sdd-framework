@@ -4,17 +4,19 @@
 Capture lessons learned and process improvements after a completed flow.
 
 ## When to use
-Use this command after an approved or approved-with-notes review.
+Use this command after an approved or approved-with-notes review has been archived with `/opsx:archive`.
 
 ## Required inputs
 - `docs/review-report.md`.
 - `docs/test-results/`.
 - `docs/backlog.md`.
+- Archived OpenSpec artifacts if available.
 
 ## Allowed reads
 - `docs/review-report.md`.
 - `docs/test-results/`.
 - `docs/backlog.md`.
+- Archived OpenSpec artifacts if available, read-only.
 
 ## Allowed writes
 - `docs/retro.md`.
@@ -35,6 +37,11 @@ Use this command after an approved or approved-with-notes review.
 Create `docs/retro.md` and `docs/lessons-learned.md` with concise lessons and follow-up actions.
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
+
+## Template Source and Runtime Output
+
+- Template source: `.opencode/templates/docs/retro.md`, `.opencode/templates/docs/lessons-learned.md`
+- Runtime output: `./docs/retro.md`, `./docs/lessons-learned.md` in the target repository
 
 ## Output template
 ```markdown

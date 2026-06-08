@@ -37,6 +37,11 @@ Create `docs/test-results/<change>.md` with real test execution evidence, or a c
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 
+## Template Source and Runtime Output
+
+- Template source: none; reads `./docs/test-plan.md` in the target repository
+- Runtime output: `./docs/test-results/<change>.md` in the target repository
+
 ## Output template
 ```markdown
 # Test Results: <change>
@@ -80,13 +85,13 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 
 ## Recommendation
 - Recommendation:
-- Next command: /opsx:archive if tests pass, otherwise /opsx:apply
+- Next command: /project:review if tests pass, otherwise /opsx:apply
 
 ## Backlog Update
 - Status:
 - Current Phase: Delivery
 - Last Command: /project:test
-- Next Command: /opsx:archive if tests pass, otherwise /opsx:apply
+- Next Command: /project:review if tests pass, otherwise /opsx:apply
 - Note: If `docs/backlog.md` did not exist, state that the backlog update was skipped.
 ```
 
@@ -98,4 +103,4 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 - `docs/backlog.md` was updated only in the allowed active item columns when it exists, or the skipped update was stated.
 
 ## Next command
-`/opsx:archive` if tests pass, otherwise return to `/opsx:apply`.
+`/project:review` if tests pass, otherwise return to `/opsx:apply`.

@@ -4,7 +4,7 @@
 Perform final technical and functional review before closing the change.
 
 ## When to use
-Use this command after `/opsx:archive` and after test results exist.
+Use this command after `/project:test` has passing evidence and before `/opsx:archive`.
 
 ## Required inputs
 - `docs/prd.md`.
@@ -41,6 +41,27 @@ Create `docs/review-report.md` with technical, functional, CDD, and TDD evidence
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 
+## Template Source and Runtime Output
+
+- Template source: `.opencode/templates/docs/review-report.md`
+- Runtime output: `./docs/review-report.md` in the target repository
+
+## Blocking Conditions
+
+Stop review and return BLOCKED if any of the following are missing or incomplete:
+
+- `docs/test-results/` does not exist or contains no results.
+- OpenSpec change artifact is missing (no `/opsx:apply` was run or archived).
+- CDD mapping between PRD contracts and test cases is absent.
+- TDD evidence (RED → GREEN progression) is not documented.
+- `docs/backlog.md` item under review is not aligned with `docs/prd.md`.
+
+If BLOCKED, output:
+
+REVIEW BLOCKED Missing: <list what is missing> Required action: <what must be completed before re-running review> Retry: /project:review after completing required action
+
+Do not approve, partially approve, or suggest workarounds for blocked items.
+
 ## Output template
 ```markdown
 # Review Report
@@ -55,7 +76,7 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 
 ## OpenSpec Change Reviewed
 - Change:
-- Archived: yes | no | unknown
+- Ready to archive: yes | no | unknown
 
 ## PRD Alignment
 - Finding:
@@ -94,13 +115,13 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 ## Verdict
 - Verdict: APPROVED | APPROVED_WITH_NOTES | CHANGES_REQUIRED | BLOCKED
 - Reason:
-- Next command: /project:retro if approved, otherwise /opsx:apply
+- Next command: /opsx:archive if approved, otherwise /opsx:apply
 
 ## Backlog Update
 - Status:
 - Current Phase: Closure
 - Last Command: /project:review
-- Next Command: /project:retro if approved, otherwise /opsx:apply
+- Next Command: /opsx:archive if approved, otherwise /opsx:apply
 - Note: If `docs/backlog.md` did not exist, state that the backlog update was skipped.
 ```
 
@@ -112,5 +133,5 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 - `docs/backlog.md` was updated only in the allowed active item columns when it exists, or the skipped update was stated.
 
 ## Next command
-- If `APPROVED` or `APPROVED_WITH_NOTES`: `/project:retro`.
+- If `APPROVED` or `APPROVED_WITH_NOTES`: `/opsx:archive`.
 - If `CHANGES_REQUIRED` or `BLOCKED`: return to `/opsx:apply`.

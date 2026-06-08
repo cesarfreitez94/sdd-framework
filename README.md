@@ -2,9 +2,37 @@
 
 cafl-framework is a command-driven software development flow built from Markdown artifacts, OpenCode project commands, and OpenSpec core used as a black box. The MVP keeps the flow small, explicit, and resumable without automation or workflow engines.
 
+## Quickstart
+1. Use this repository as a lightweight phase-driven development framework for OpenCode.
+2. Make sure OpenCode is installed and configured.
+3. Use the project commands in `.opencode/commands/`.
+4. Start with `/project:discover-repo`.
+5. Use the target repository's `docs/backlog.md` as the MVP state source when resuming work.
+6. Use OpenSpec `/opsx:*` commands only during the Specification and Delivery steps shown in the happy path.
+
+## Current Development Status
+
+| Area | Status |
+|---|---|
+| 9 project flow commands | ✅ Implemented |
+| Manual readiness and review gates | ✅ Implemented |
+| OpenSpec black-box integration | ✅ Documented |
+| Markdown artifact templates | ✅ Moved to `.opencode/templates/docs/` |
+| Downstream usage guide | ✅ Documented (manual copy method) |
+| Failure and rework flow | ✅ Documented |
+| Execution evidence | 🔄 In progress — first downstream validation underway |
+| Python installer | ❌ Not implemented — future scope |
+| Coordinator agent | ❌ Not implemented — future scope |
+| session.yaml | ❌ Not implemented — future scope |
+| CI/CD and automated validators | ❌ Not implemented — future scope |
+
+`docs/*.md` in this repository are living framework documentation and evidence,
+not project artifacts. Base reusable templates live in `.opencode/templates/docs/`.
+`docs/execution-log.md` is mandatory evidence for every downstream validation.
+
 ## What the MVP Includes
 - 9 cafl project commands under `.opencode/commands/`.
-- Markdown documentation templates under `docs/`.
+- Markdown documentation templates under `.opencode/templates/docs/`.
 - A 13-step happy path from Discovery to Closure.
 - Clear separation between cafl commands and OpenSpec commands.
 - Backlog-based state tracking for resuming work.
@@ -17,12 +45,14 @@ cafl-framework is a command-driven software development flow built from Markdown
 - No CI/CD.
 - No automated docs.
 - No JSON Schema validators.
-- No gates.
+- No automated gates.
 - No workflow engine.
 - No OpenSpec expanded integration.
 - No `/project:release-notes` command.
 - No agents or agent automation.
 - No OpenSpec internals are modified.
+
+Manual review gates and backlog readiness gates exist in the MVP. Automated gates are future scope.
 
 Forbidden or deferred command names may appear in README or command files only as exclusions, future-scope notes, or explicit prohibitions. Their presence in documentation does not mean they are implemented.
 
@@ -39,25 +69,75 @@ Forbidden or deferred command names may appear in README or command files only a
     project-test.md
     project-review.md
     project-retro.md
+  templates/
+    docs/
+      repo-assessment.md
+      elicitation-notes.md
+      business-context.md
+      risks-assumptions-constraints.md
+      prd.md
+      backlog.md
+      prioritization.md
+      test-plan.md
+      review-report.md
+      retro.md
+      lessons-learned.md
+      execution-log.md
 
 docs/
-  repo-assessment.md
-  elicitation-notes.md
-  business-context.md
-  risks-assumptions-constraints.md
-  prd.md
-  backlog.md
-  prioritization.md
-  test-plan.md
-  test-results/
-  review-report.md
-  retro.md
-  lessons-learned.md
+  execution-log.md
+  framework-status.md
 
 README.md
 ```
 
 OpenSpec may also create and maintain its own `openspec/` folder. cafl commands treat OpenSpec as read-only unless the user explicitly runs OpenSpec commands.
+
+## Source of Truth
+| Artifact | Role |
+|---|---|
+| `README.md` | Current operational guide |
+| `.opencode/commands/project-*.md` | Current execution contracts |
+| `.opencode/templates/docs/*.md` | Base reusable downstream artifact templates |
+| `docs/*.md` | Living framework documentation, status, and downstream validation evidence |
+| `docs/execution-log.md` | Real downstream execution, retry, and validation evidence |
+| `docs/framework-status.md` | Current cafl-framework repository status |
+| `cafl-framework-prd.md` | Historical approved MVP PRD, not current operational source |
+
+> In this repository, `docs/*.md` are living framework docs and evidence, not base project artifact templates. In downstream repositories, copied templates become live generated artifacts.
+
+## Template vs Runtime Artifacts
+
+Base reusable templates live in `.opencode/templates/docs/`.
+When setting up a downstream repository, copy `.opencode/templates/docs/*.md`
+into the target repository as `docs/*.md` before running project commands.
+In this repository, `docs/` contains living framework documentation,
+status tracking, and downstream validation evidence — not project artifact templates.
+
+## Applying CAFL to a Downstream Repository
+
+Current MVP usage is manual:
+
+1. Copy `.opencode/commands/project-*.md` into `.opencode/commands/` of the target repo.
+2. Copy `.opencode/templates/docs/*.md` into `docs/` of the target repo.
+3. Open the target repo in OpenCode.
+4. Run `/project:discover-repo` as the first command.
+5. Follow `docs/backlog.md` as the MVP state source throughout the project.
+6. Use OpenSpec `/opsx:*` only when the happy path reaches Specification or Delivery.
+
+### OpenSpec Preflight
+
+Before running any `/opsx:*` command in the target repository:
+
+- Confirm OpenSpec is installed and configured for that repo.
+- Confirm `/opsx:explore`, `/opsx:propose`, `/opsx:apply`, and `/opsx:archive` are available.
+- If OpenSpec is unavailable, stop at the current phase and record the blocker
+  in `docs/execution-log.md`.
+- Do not emulate OpenSpec commands from CAFL.
+- Do not modify OpenSpec internals.
+
+A future installer (`cafl-framework-installer`) will automate steps 1 and 2.
+Until then, downstream setup is manual.
 
 ## Happy Path MVP
 ```text
@@ -71,8 +151,8 @@ OpenSpec may also create and maintain its own `openspec/` folder. cafl commands 
 /project:test-plan
 /opsx:apply
 /project:test
-/opsx:archive
 /project:review
+/opsx:archive
 /project:retro
 ```
 
@@ -111,7 +191,7 @@ These commands are future scope only and are not integrated into the MVP.
 | `/opsx:onboard` | Brownfield OpenSpec onboarding |
 
 ## Backlog as MVP State Source
-`docs/backlog.md` is the only MVP state source. Do not create `session.yaml` in the MVP.
+In downstream repositories, `docs/backlog.md` is the only MVP state source. Do not create `session.yaml` in the MVP.
 
 Every cafl command must update `docs/backlog.md` when the file exists. This update is limited to the active item columns: `Status`, `Current Phase`, `Last Command`, and `Next Command`. No command may rewrite unrelated backlog content. If `docs/backlog.md` does not exist yet, the command must state that backlog update was skipped.
 
@@ -120,6 +200,28 @@ Allowed status values are:
 - `In Progress`
 - `Blocked`
 - `Completed`
+
+## Failure, Rework, and Retry Flow
+
+| Failure point | Required action | Retry target | Evidence artifact |
+|---|---|---|---|
+| `/project:elicit` → NOT_READY | Gather missing context, re-elicit | `/project:elicit` | `docs/elicitation-notes.md` |
+| `/project:prd` → NOT_READY | Resolve blocking questions | `/project:elicit` | `docs/prd.md` |
+| `/project:backlog` → PRD NOT_READY | Stop backlog generation | `/project:prd` | `docs/backlog.md` |
+| `/project:test-plan` → OpenSpec artifacts missing | Stop, repair OpenSpec proposal | `/opsx:propose` | `docs/test-plan.md` |
+| `/project:test` → FAILED or NOT_EXECUTED | Rework implementation | `/opsx:apply` | `docs/test-results/` |
+| `/project:review` → CHANGES_REQUIRED or BLOCKED | Rework before archive | `/opsx:apply` | `docs/review-report.md` |
+| `/project:review` → repeated failure | Review test-plan and PRD alignment | `/project:test-plan` or `/project:prd` | `docs/review-report.md` |
+| Downstream validation exposes framework weakness | Record in execution-log, improve command | `docs/execution-log.md` → `.opencode/commands/project-*.md` | `docs/execution-log.md` |
+
+## Downstream Validation Loop
+1. Apply the happy path in a real downstream repo.
+2. Record every command execution in `docs/execution-log.md`.
+3. If a command fails or produces weak output, identify the root cause.
+4. Apply the fix in `.opencode/commands/project-*.md`.
+5. Re-run the same downstream step to validate.
+6. If validated, commit the framework change with reference to the downstream
+   repo and the execution-log entry.
 
 ## v1.1 Persistence Options
 MVP uses Option C in simple form: `docs/backlog.md` with state columns. v1.1 should evaluate Option B for larger or multi-session projects.
@@ -171,12 +273,14 @@ Each contract uses this block:
 
 ```markdown
 ### Contract: <name>
+- Source:
 - Input:
 - Output:
 - Rules:
 - Expected errors:
 - Edge cases:
-- Validated by:
+- Validation method:
+- Related acceptance criteria:
 ```
 
 OpenSpec specs may reference or refine these contracts, but cafl does not modify OpenSpec internals. `docs/test-plan.md` maps test cases back to contracts, and `docs/review-report.md` checks contract compliance.
@@ -207,7 +311,7 @@ Each test case uses this block:
 
 ## Definition of MVP Done
 - All 9 command files exist under `.opencode/commands/`.
-- All required docs files and folders exist.
+- All required template files under `.opencode/templates/docs/` and living framework docs under `docs/` exist.
 - `README.md` documents the happy path.
 - OpenSpec internals are not modified.
 - No v1.1 or v1.2 functionality is implemented.
@@ -241,6 +345,7 @@ Approved source PRD files that existed before implementation may remain in their
 | Delivery | Documentation | Out of MVP | - | v1.2 |
 | Delivery | CI/CD | Out of MVP | - | v1.2 |
 | Closure | Review | Not covered | `/project:review` | `docs/review-report.md` |
+| Closure | Archive | OpenSpec core | `/opsx:archive` | Archived OpenSpec change |
 | Closure | Release notes | Out of MVP | Temporarily summarized in `/project:review` or `/project:retro` if applicable | v1.1 |
 | Closure | Retro / lessons learned | Not covered | `/project:retro` | `docs/retro.md`, `docs/lessons-learned.md` |
 
