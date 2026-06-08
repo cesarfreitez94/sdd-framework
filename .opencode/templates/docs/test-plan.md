@@ -34,6 +34,13 @@
 - Post-implementation expected state: PASSES (GREEN)
 - Validates contract:
 
+### RED Evidence
+
+- RED command:
+- RED status: EXPECTED_FAIL_RECORDED | NOT_EXECUTED | NOT_APPLICABLE
+- RED evidence:
+- Justification if not executed:
+
 ## Test Data
 - Data: TBD
 - Source: TBD

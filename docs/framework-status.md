@@ -5,7 +5,7 @@
 - Status: In Progress
 - Focus: Audit fix pass 2 — operational gap resolution
 - Last reviewed: 2026-06-08
-- Next recommended action: Commit fix pass, re-run audit, begin cafl-framework-installer validation
+- Next recommended action: Maintainer-only commit of the fix pass after review, then re-run audit and begin cafl-framework-installer validation
 
 ## Implemented
 

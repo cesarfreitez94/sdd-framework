@@ -14,7 +14,8 @@ Use this command after `docs/prd.md` exists and before prioritization.
 
 ## Allowed writes
 - `docs/backlog.md`, to create the initial backlog table from `docs/prd.md` when the file does not exist.
-- `docs/backlog.md`, only to update `Status`, `Current Phase`, `Last Command`, and `Next Command` for the active item when the file exists.
+- `docs/backlog.md`, to replace placeholder/template backlog content when the existing file is an uninitialized template.
+- `docs/backlog.md`, only to update `Status`, `Current Phase`, `Last Command`, and `Next Command` for the active item when the file contains real backlog items.
 
 ## Forbidden actions
 - Do not commit.
@@ -34,6 +35,33 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 
 - Template source: `.opencode/templates/docs/backlog.md`
 - Runtime output: `./docs/backlog.md` in the target repository
+
+## Backlog Template Handling
+
+`docs/backlog.md` may already exist because downstream setup copies templates before commands run.
+
+The command must distinguish these cases:
+
+1. If `docs/backlog.md` does not exist:
+   - Create it from `.opencode/templates/docs/backlog.md`.
+   - Generate backlog items from `docs/prd.md`.
+
+2. If `docs/backlog.md` exists and contains template markers, placeholders, or only TBD/example rows:
+   - Treat it as an uninitialized template.
+   - Replace placeholder backlog content with real backlog items generated from `docs/prd.md`.
+   - Preserve the required backlog table columns.
+
+3. If `docs/backlog.md` exists and contains real backlog items:
+   - Do not rewrite unrelated stories.
+   - Update only allowed state columns when applicable.
+   - If replacing content would be unsafe, stop and report `BLOCKED`.
+
+Template indicators include:
+- `TBD`
+- `template`
+- `example`
+- placeholder IDs
+- empty backlog table
 
 ## Preflight Check
 
@@ -82,6 +110,7 @@ The backlog is the MVP state source. Update only the active item state columns w
 - If `docs/prd.md` declares `Status: NOT_READY`, the command stops and outputs the required blocked message.
 - If `## Backlog Readiness` is missing, the command stops and routes back to `/project:prd`.
 - The backlog table includes exactly these columns: `ID`, `User Story`, `Acceptance Criteria`, `Priority`, `Status`, `Current Phase`, `Last Command`, and `Next Command`.
+- Existing template or placeholder backlog content is replaced with real backlog items generated from `docs/prd.md`.
 - Status values are limited to `Pending`, `In Progress`, `Blocked`, and `Completed`.
 - The backlog is documented as the MVP state source.
 - Missing information is represented as assumptions or open questions.

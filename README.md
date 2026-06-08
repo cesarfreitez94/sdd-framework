@@ -8,7 +8,7 @@ cafl-framework is a command-driven software development flow built from Markdown
 3. Use the project commands in `.opencode/commands/`.
 4. Start with `/project:discover-repo`.
 5. Use the target repository's `docs/backlog.md` as the MVP state source when resuming work.
-6. Use OpenSpec `/opsx:*` commands only during the Specification and Delivery steps shown in the happy path.
+6. Use OpenSpec `/opsx:*` commands only during the Specification, Delivery, and Technical Closure steps shown in the happy path.
 
 ## Current Development Status
 
@@ -123,18 +123,34 @@ Current MVP usage is manual:
 3. Open the target repo in OpenCode.
 4. Run `/project:discover-repo` as the first command.
 5. Follow `docs/backlog.md` as the MVP state source throughout the project.
-6. Use OpenSpec `/opsx:*` only when the happy path reaches Specification or Delivery.
+6. Use OpenSpec `/opsx:*` only when the happy path reaches Specification, Delivery, or Technical Closure.
 
 ### OpenSpec Preflight
 
-Before running any `/opsx:*` command in the target repository:
+Before `/opsx:explore`:
+- Confirm OpenSpec is installed/configured in the target repo.
+- Confirm the target repo has a clear active backlog item or prioritized feature.
+- Confirm current git status is understood.
 
-- Confirm OpenSpec is installed and configured for that repo.
-- Confirm `/opsx:explore`, `/opsx:propose`, `/opsx:apply`, and `/opsx:archive` are available.
-- If OpenSpec is unavailable, stop at the current phase and record the blocker
-  in `docs/execution-log.md`.
-- Do not emulate OpenSpec commands from CAFL.
-- Do not modify OpenSpec internals.
+Before `/opsx:propose`:
+- Confirm `/opsx:explore` or equivalent technical discovery has been completed.
+- Confirm `docs/prd.md` is READY.
+- Confirm `docs/backlog.md` contains the selected item.
+- Confirm acceptance criteria exist.
+
+Before `/opsx:apply`:
+- Confirm OpenSpec proposal/spec/tasks exist.
+- Confirm `docs/test-plan.md` exists.
+- Confirm TDD RED evidence is recorded or explicitly justified as `NOT_EXECUTED` / `NOT_APPLICABLE`.
+
+Before `/opsx:archive`:
+- Confirm `/project:test` passed or has justified evidence.
+- Confirm `/project:review` is APPROVED or APPROVED_WITH_NOTES.
+- Confirm there are no unresolved blockers.
+- Confirm archive happens only after review.
+
+If any preflight fails, stop and record the blocker. Do not emulate OpenSpec from CAFL.
+Do not modify OpenSpec internals.
 
 A future installer (`cafl-framework-installer`) will automate steps 1 and 2.
 Until then, downstream setup is manual.
@@ -166,6 +182,18 @@ Until then, downstream setup is manual.
 | Stack commands | Project-specific build, test, lint, or runtime commands | Provided by the target repository |
 
 cafl commands must not duplicate OpenSpec functionality and must not modify OpenSpec internals.
+
+## OpenSpec Phase Participation
+
+Specification:
+- `/opsx:explore`
+- `/opsx:propose`
+
+Delivery:
+- `/opsx:apply`
+
+Technical Closure:
+- `/opsx:archive`
 
 ## OpenSpec Core Commands Used
 These commands are documented as external black-box capabilities. They are not implemented by cafl-framework.
@@ -210,7 +238,7 @@ Allowed status values are:
 | `/project:backlog` → PRD NOT_READY | Stop backlog generation | `/project:prd` | `docs/backlog.md` |
 | `/project:test-plan` → OpenSpec artifacts missing | Stop, repair OpenSpec proposal | `/opsx:propose` | `docs/test-plan.md` |
 | `/project:test` → FAILED or NOT_EXECUTED | Rework implementation | `/opsx:apply` | `docs/test-results/` |
-| `/project:review` → CHANGES_REQUIRED or BLOCKED | Rework before archive | `/opsx:apply` | `docs/review-report.md` |
+| `/project:review` → CHANGES_REQUIRED or BLOCKED | Route rework by failure cause; do not default all failures to implementation | `/project:prd`, `/project:test-plan`, `/project:test`, `/opsx:propose`, `/opsx:apply`, or `/project:review` | `docs/review-report.md` |
 | `/project:review` → repeated failure | Review test-plan and PRD alignment | `/project:test-plan` or `/project:prd` | `docs/review-report.md` |
 | Downstream validation exposes framework weakness | Record in execution-log, improve command | `docs/execution-log.md` → `.opencode/commands/project-*.md` | `docs/execution-log.md` |
 
@@ -220,8 +248,8 @@ Allowed status values are:
 3. If a command fails or produces weak output, identify the root cause.
 4. Apply the fix in `.opencode/commands/project-*.md`.
 5. Re-run the same downstream step to validate.
-6. If validated, commit the framework change with reference to the downstream
-   repo and the execution-log entry.
+6. If validated, recommend that a maintainer commit the framework change with reference to the downstream
+   repo and the execution-log entry. Project commands must not commit.
 
 ## v1.1 Persistence Options
 MVP uses Option C in simple form: `docs/backlog.md` with state columns. v1.1 should evaluate Option B for larger or multi-session projects.
@@ -302,6 +330,23 @@ Each test case uses this block:
 
 `/project:test` records the real execution result. Tests must not be faked.
 
+Automatable test cases need RED evidence before `/opsx:apply`. If RED cannot be executed, record `NOT_EXECUTED` with justification. Use `NOT_APPLICABLE` only when the test case is not automatable or RED does not apply.
+
+## Maintainer-only Actions
+
+The following actions are maintainer/owner responsibilities and must not be executed by project commands:
+
+- `git add`
+- `git commit`
+- `git push`
+- closing framework improvements
+- approving framework command changes
+- declaring downstream validation accepted
+- changing current operational source-of-truth rules
+- modifying OpenSpec internals
+
+Commands may recommend these actions, but must not execute them.
+
 ## How to Resume Work
 1. Open `docs/backlog.md`.
 2. Find the active item by `Status` and `Current Phase`.
@@ -345,7 +390,7 @@ Approved source PRD files that existed before implementation may remain in their
 | Delivery | Documentation | Out of MVP | - | v1.2 |
 | Delivery | CI/CD | Out of MVP | - | v1.2 |
 | Closure | Review | Not covered | `/project:review` | `docs/review-report.md` |
-| Closure | Archive | OpenSpec core | `/opsx:archive` | Archived OpenSpec change |
+| Technical Closure | Archive | OpenSpec core | `/opsx:archive` | Archived OpenSpec change |
 | Closure | Release notes | Out of MVP | Temporarily summarized in `/project:review` or `/project:retro` if applicable | v1.1 |
 | Closure | Retro / lessons learned | Not covered | `/project:retro` | `docs/retro.md`, `docs/lessons-learned.md` |
 
@@ -354,5 +399,5 @@ Approved source PRD files that existed before implementation may remain in their
 - Use Markdown outputs only.
 - Do not commit or push from cafl commands.
 - Do not invent missing information; write assumptions and open questions.
-- Preserve separation between Discovery, Definition, Specification, Delivery, and Closure.
+- Preserve separation between Discovery, Definition, Specification, Delivery, Closure, and Technical Closure.
 - Use `/opsx:sync` only when explicitly needed during Delivery; it is not part of the base happy path.

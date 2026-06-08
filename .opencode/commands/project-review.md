@@ -53,14 +53,36 @@ Stop review and return BLOCKED if any of the following are missing or incomplete
 - `docs/test-results/` does not exist or contains no results.
 - OpenSpec change artifact is missing (no `/opsx:apply` was run or archived).
 - CDD mapping between PRD contracts and test cases is absent.
-- TDD evidence (RED → GREEN progression) is not documented.
+- TDD RED evidence or GREEN validation evidence is not documented.
 - `docs/backlog.md` item under review is not aligned with `docs/prd.md`.
 
 If BLOCKED, output:
 
-REVIEW BLOCKED Missing: <list what is missing> Required action: <what must be completed before re-running review> Retry: /project:review after completing required action
+REVIEW BLOCKED Missing: <list what is missing> Required action: <what must be completed before re-running review> Retry: <required retry target from Review Failure Routing>
 
 Do not approve, partially approve, or suggest workarounds for blocked items.
+
+## Review Failure Routing
+
+Route rework based on the failure cause:
+
+| Failure cause | Required retry target |
+|---|---|
+| Missing or NOT_READY PRD / missing contracts | `/project:prd` |
+| Missing CDD mapping | `/project:test-plan` |
+| Missing TDD RED evidence or test plan mismatch | `/project:test-plan` |
+| Missing test results | `/project:test` |
+| Failed tests | `/project:test` or `/opsx:apply`, depending on whether the failure is test execution or implementation |
+| Missing OpenSpec proposal/spec artifacts | `/opsx:propose` |
+| Missing OpenSpec apply evidence | `/opsx:apply` |
+| Implementation/code issue | `/opsx:apply` |
+| Documentation issue only | `/project:review` after documentation correction |
+
+Rules:
+
+Do not route all failures to /opsx:apply.
+Do not approve review if required evidence is missing.
+If the failure cause is ambiguous, return BLOCKED and list missing evidence.
 
 ## Output template
 ```markdown
@@ -108,6 +130,11 @@ Do not approve, partially approve, or suggest workarounds for blocked items.
 - Note:
 - Gap:
 
+## Retry Routing
+- Failure cause:
+- Required retry target:
+- Missing evidence if BLOCKED:
+
 ## Release Notes Summary If Applicable
 - Summary:
 - Note: Formal `/project:release-notes` is out of MVP scope.
@@ -115,23 +142,25 @@ Do not approve, partially approve, or suggest workarounds for blocked items.
 ## Verdict
 - Verdict: APPROVED | APPROVED_WITH_NOTES | CHANGES_REQUIRED | BLOCKED
 - Reason:
-- Next command: /opsx:archive if approved, otherwise /opsx:apply
+- Next command: /opsx:archive if approved, otherwise the required retry target from Review Failure Routing
 
 ## Backlog Update
 - Status:
 - Current Phase: Closure
 - Last Command: /project:review
-- Next Command: /opsx:archive if approved, otherwise /opsx:apply
+- Next Command: /opsx:archive if approved, otherwise the required retry target from Review Failure Routing
 - Note: If `docs/backlog.md` did not exist, state that the backlog update was skipped.
 ```
 
 ## Acceptance criteria
 - `docs/review-report.md` exists.
 - Scope, backlog item, OpenSpec change, PRD alignment, CDD compliance, TDD evidence, code quality, architecture, security, documentation, release notes summary if applicable, and verdict are documented.
+- Retry routing identifies the failure cause and required retry target when the verdict is `CHANGES_REQUIRED` or `BLOCKED`.
 - Verdict is one of `APPROVED`, `APPROVED_WITH_NOTES`, `CHANGES_REQUIRED`, or `BLOCKED`.
+- Review is not approved when required evidence is missing.
 - OpenSpec artifacts were read only and not modified.
 - `docs/backlog.md` was updated only in the allowed active item columns when it exists, or the skipped update was stated.
 
 ## Next command
 - If `APPROVED` or `APPROVED_WITH_NOTES`: `/opsx:archive`.
-- If `CHANGES_REQUIRED` or `BLOCKED`: return to `/opsx:apply`.
+- If `CHANGES_REQUIRED` or `BLOCKED`: return to the required retry target from Review Failure Routing.

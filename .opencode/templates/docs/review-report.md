@@ -46,6 +46,25 @@
 - Note: TBD
 - Gap: TBD
 
+## Review Failure Routing
+
+| Failure cause | Required retry target |
+|---|---|
+| Missing or NOT_READY PRD / missing contracts | `/project:prd` |
+| Missing CDD mapping | `/project:test-plan` |
+| Missing TDD RED evidence or test plan mismatch | `/project:test-plan` |
+| Missing test results | `/project:test` |
+| Failed tests | `/project:test` or `/opsx:apply`, depending on whether the failure is test execution or implementation |
+| Missing OpenSpec proposal/spec artifacts | `/opsx:propose` |
+| Missing OpenSpec apply evidence | `/opsx:apply` |
+| Implementation/code issue | `/opsx:apply` |
+| Documentation issue only | `/project:review` after documentation correction |
+
+## Retry Target
+- Failure cause: TBD
+- Required retry target: TBD
+- Missing evidence if BLOCKED: TBD
+
 ## Release Notes Summary If Applicable
 - Summary: TBD
 - Note: Formal `/project:release-notes` is out of MVP scope.
@@ -53,11 +72,11 @@
 ## Verdict
 - Verdict: APPROVED | APPROVED_WITH_NOTES | CHANGES_REQUIRED | BLOCKED
 - Reason: TBD
-- Next command: /opsx:archive if approved, otherwise /opsx:apply
+- Next command: /opsx:archive if approved, otherwise the required retry target above
 
 ## Backlog Update
 - Status: TBD
 - Current Phase: Closure
 - Last Command: /project:review
-- Next Command: /opsx:archive if approved, otherwise /opsx:apply
+- Next Command: /opsx:archive if approved, otherwise the required retry target above
 - Note: If `docs/backlog.md` did not exist, state that the backlog update was skipped.

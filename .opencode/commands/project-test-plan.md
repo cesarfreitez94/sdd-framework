@@ -42,6 +42,18 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 - Template source: `.opencode/templates/docs/test-plan.md`
 - Runtime output: `./docs/test-plan.md` in the target repository
 
+## TDD RED Evidence Rule
+
+Before `/opsx:apply`, each automatable test case should define how RED evidence will be captured.
+
+Allowed RED statuses:
+
+- `EXPECTED_FAIL_RECORDED`: the test was executed before implementation and failed as expected.
+- `NOT_EXECUTED`: the RED check could not be executed; justification is required.
+- `NOT_APPLICABLE`: the test case is not automatable or RED does not apply; justification is required.
+
+The command must not claim TDD RED evidence without actual evidence or explicit justification.
+
 ## Output template
 ```markdown
 # Test Plan
@@ -76,6 +88,13 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 - Post-implementation expected state: PASSES (GREEN)
 - Validates contract:
 
+### RED Evidence
+
+- RED command:
+- RED status: EXPECTED_FAIL_RECORDED | NOT_EXECUTED | NOT_APPLICABLE
+- RED evidence:
+- Justification if not executed:
+
 ## Test Data
 - Data:
 - Source:
@@ -106,6 +125,8 @@ Every cafl command must update `docs/backlog.md` when the file exists. This upda
 - `docs/test-plan.md` exists.
 - Scope under test, related backlog item, related OpenSpec change, CDD contracts covered, test cases, test data, expected evidence, and commands to run are documented.
 - Each test case includes the required RED/GREEN TDD block.
+- Each automatable test case includes RED evidence status before `/opsx:apply`.
+- RED evidence is either actually recorded or explicitly justified as `NOT_EXECUTED` or `NOT_APPLICABLE`.
 - Missing information is represented as assumptions or open questions.
 - OpenSpec artifacts were read only and not modified.
 - `docs/backlog.md` was updated only in the allowed active item columns when it exists, or the skipped update was stated.
