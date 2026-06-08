@@ -1,4 +1,10 @@
 # PRD — cafl-framework
+
+> Historical note:
+> This PRD is the approved source PRD for the initial MVP commit.
+> The current operational source of truth is `README.md` plus `.opencode/commands/*.md`.
+> Some wording may be historical and should not override current command contracts.
+
 ## Flujo de desarrollo guiado por fases, comandos y evidencias
 
 **Versión:** 1.3
@@ -75,6 +81,7 @@ Trazabilidad directa desde los 15 items originales del PRD base hacia los comand
 | Delivery | Documentation | Fuera del MVP | — | v1.2 |
 | Delivery | CI/CD | Fuera del MVP | — | v1.2 |
 | Closure | Review | No cubierta | `/project:review` | `docs/review-report.md` |
+| Closure | Archive | OpenSpec core | `/opsx:archive` | Specs archivadas, cambio cerrado |
 | Closure | Release notes | Fuera del MVP | Cubierto temporalmente en `/project:review` o `/project:retro` | v1.1 |
 | Closure | Retro / lessons learned | No cubierta | `/project:retro` | `docs/retro.md`, `docs/lessons-learned.md` |
 
@@ -192,8 +199,8 @@ Trazabilidad directa desde los 15 items originales del PRD base hacia los comand
 
 | Item | Comando | Cobertura | Salida |
 |---|---|---|---|
-| Archive | `/opsx:archive` | OpenSpec core | Specs archivadas, cambio cerrado |
 | Review | `/project:review` | cafl complementario | `docs/review-report.md` |
+| Archive | `/opsx:archive` | OpenSpec core | Specs archivadas, cambio cerrado |
 | Release notes | — | Fuera del MVP | Cubierto temporalmente dentro de `/project:review` o `/project:retro` si aplica. Comando formal `/project:release-notes` disponible en v1.1. |
 | Retro | `/project:retro` | cafl complementario | `docs/retro.md`, `docs/lessons-learned.md` |
 
@@ -212,12 +219,12 @@ Trazabilidad directa desde los 15 items originales del PRD base hacia los comand
 /project:test-plan
 /opsx:apply
 /project:test
-/opsx:archive
 /project:review
+/opsx:archive
 /project:retro
 ```
 
-13 pasos. Los comandos OpenSpec usados en el happy path son caja negra ya existente. `/opsx:sync` está disponible como comando opcional durante Delivery pero no forma parte del happy path base. Los 8 comandos cafl son los que se construyen.
+13 pasos. Los comandos OpenSpec usados en el happy path son caja negra ya existente. `/opsx:sync` está disponible como comando opcional durante Delivery pero no forma parte del happy path base. Los 9 comandos cafl son los que se construyen.
 
 ---
 
